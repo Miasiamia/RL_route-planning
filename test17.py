@@ -1,6 +1,6 @@
 """
 my codes
-note:...
+note: -- 目前存在会在某两点之间来回跳步的问题，导致程序陷入死循环
 
 """
 import math
