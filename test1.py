@@ -1,6 +1,9 @@
 """
 my codes
-note: -- 目前存在会在某两点之间来回跳步的问题，导致程序陷入死循环
+notes: -- 第一版
+
+目前存在的问题是：迭代训练1000次能基本完成（有时耗时短，有时快）。但训练完成后，部署算法时，会在某两节点之间来回移动，导致程序陷入死循环。
+此问题是在我添加了注有 % 符号的代码后，从输出结果中发现的
 
 """
 import math
@@ -139,8 +142,7 @@ def main():
                 action = random.sample(state_ac_available, 1)
 
             next_state, reward = step(state, action[0])
-            # loss = next_state - state
-
+            
             ##
             next_state_ac_available = []
             node_next_state = node[next_state]
@@ -160,9 +162,7 @@ def main():
 
             # Q-learning algorithm !!
             q_value[state, action[0]] += ALPHA * (reward + gamma * next_state_max_q_value - q_value[state, action[0]])
-
-            # loss = next_state - state
-
+            
             # Update state
             state = next_state
 
@@ -174,8 +174,8 @@ def main():
     state = START
     rewards = 0
     paths = []
-    while state != GOAL:
-    # for s in range(100):
+    # while state != GOAL:
+    for s in range(100): %%%%
 
         paths.append(state)
         deploy_state_ac_available = []
@@ -193,8 +193,8 @@ def main():
         new_state, reward = step(state, action[0])
         rewards = rewards + reward
 
-        # if new_state == GOAL:
-        #     break
+        if new_state == GOAL: %%%%
+            break             %%%%
         state = new_state
 
     paths.append(GOAL)
@@ -204,23 +204,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# def episode(q_value):
-#     # track the total time steps in this episode
-#     time = 0
-#
-#     # initialize state
-#     state = START
-#     sample_num = random.random()
-#
-#     eps_threshold = EPS_END + (EPS_START - EPS_END) * math.exp(-1. * steps_done / EPS_DECAY)
-#     steps_done += 1
-#     # choose an action based on epsilon-greedy algorithm
-#     if np.random.binomial(1, EPSILON) == 1:
-#         action = np.random.choice(ACTIONS)  # 探索
-#
-#     else:  # exploit 利用
-#         values_ = q_value[state[0], state[1], :]
-#         action = \
-#             np.random.choice([action_ for action_, value_ in enumerate(values_) if value_ == np.max(values_)])
