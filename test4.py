@@ -1,7 +1,11 @@
 """
 my codes
-note: -- 目前存在会在某两点之间来回跳步的问题，导致程序陷入死循环
+notes: 添加了一个可视化函数--绘图--可观察收敛速度 ；添加了可输出路径总长度的代码部分（见结尾处）
+同时得到结论：选择 reward2 的定义得到的路径为最优； 选 reward1 有时得到的路径是次优的
+因而，奖励的定义落脚于 reward2
+
 """
+
 import math
 import random
 import numpy as np
@@ -101,9 +105,9 @@ def step(state, action):
     #
     #     reward = -1
 
-    reward1 = -(abs(x_goal - x1) + abs(y_goal - y1))   # -- 收敛要快点 --曼哈顿距离
+    reward1 = -(abs(x_goal - x1) + abs(y_goal - y1))                 # --曼哈顿距离
 
-    reward2 = -math.sqrt(sum([(x_goal - x1)**2, (y_goal - y1)**2]))  # -- 收敛要慢点 -- 欧式距离
+    reward2 = -math.sqrt(sum([(x_goal - x1)**2, (y_goal - y1)**2]))  # -- 欧式距离
 
     reward0 = -(abs(x0 - x1) + abs(y0 - y1))
 
