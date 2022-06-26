@@ -1,6 +1,9 @@
 """
 my codes
-note: -- 目前存在会在某两点之间来回跳步的问题，导致程序陷入死循环
+notes: 针对前面留下的问题，新对策是：从step函数入手，即优化其中的reward定义，更新为 -- 每走一步得 -1，到终点时得 10，这种奖励模式（见%处）虽然能解决前面的问题，
+但导致了规划出来的路径只是走的步数为最优，而非总的路径距离为最优。因为该环境模型不是栅格，其上下左右移动一步的代价不是相同的。
+因此，对策又变为：见 step 函数中的 reward1 、  reward2。在这之后，程序运行速度良好。
+
 """
 import math
 import random
@@ -94,18 +97,18 @@ def step(state, action):
     x1, y1 = positions[next_state]
     x_goal, y_goal = positions[GOAL]
 
-    # if next_state == GOAL:
+    # if next_state == GOAL: %%%%
     #     reward = 10
     #
     # else:
     #
     #     reward = -1
 
-    reward1 = -(abs(x_goal - x1) + abs(y_goal - y1))   # -- 收敛要快点 --曼哈顿距离
+    reward1 = -(abs(x_goal - x1) + abs(y_goal - y1))                 # --曼哈顿距离
 
-    reward2 = -math.sqrt(sum([(x_goal - x1)**2, (y_goal - y1)**2]))  # -- 收敛要慢点 -- 欧式距离
+    reward2 = -math.sqrt(sum([(x_goal - x1)**2, (y_goal - y1)**2]))  # -- 欧式距离
 
-    reward0 = -(abs(x0 - x1) + abs(y0 - y1))
+    reward0 = -(abs(x0 - x1) + abs(y0 - y1))                         # 最开始的对 reward 的定义
 
     reward = reward2
 
