@@ -1,10 +1,15 @@
 """
-my codes -- 自己搭建的一个非栅格版路径规划
-详见 github:仓库 RL_route-planning
-
-note: 第一版
+my codes 
+notes: 第二版
+针对第一版的问题，所想对策是：在训练之中，一旦出现在某两点之间来回移动时，即 state --> next_state --> next_next_state 中 state 与 next_next_state 为同一节点,
+则更新 next_state --> next_next_state 获得的奖励，将其置为一个绝对值较大的负数。
+代码修改处见 % 标记处
+此对策的核心思想是给予对该问题情况的惩罚，但预期效果不佳。
+在将某几个点置为终点时，效果还行，但仍存在第一版中的问题，甚至有时规划出来的路径形成一个封闭的矩形。
+期间，怀疑是惩罚的负数不够小，调整后，收效甚微
 
 """
+
 import math
 import random
 import numpy as np
@@ -162,7 +167,7 @@ def main():
             # Q-learning algorithm !!
             q_value[state, action[0]] += ALPHA * (reward + gamma * next_state_max_q_value - q_value[state, action[0]])
 
-            # 在 next_state上 再来一次
+            # 在 next_state上 再来一次   %%%%
             sample_num = random.random()
 
             next_state_ac_available = []
